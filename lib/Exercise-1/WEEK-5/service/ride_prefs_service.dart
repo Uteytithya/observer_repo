@@ -1,3 +1,6 @@
+import 'package:observer_repo/Exercise-1/WEEK-5/dummy_data/dummy_data.dart';
+import 'package:observer_repo/Exercise-1/WEEK-5/listener/ride_preference_listener.dart';
+
 import '../model/ride_pref/ride_pref.dart';
 import '../repository/ride_preferences_repository.dart';
 
@@ -14,7 +17,9 @@ class RidePrefService {
   final RidePreferencesRepository repository;
 
   // The current preference
-  RidePreference? _currentPreference;
+  RidePreference? _currentPreference = fakeRidePrefs[0];
+
+  final List<RidePreferencesListener> _listeners = [];
 
   ///
   /// Private constructor
@@ -61,5 +66,18 @@ class RidePrefService {
 
   void addPreference(RidePreference preference) {
     return repository.addPreference(preference);
+  }
+
+  void _notifyListeners() {
+    for (var listener in _listeners) {
+      listener.onPreferenceSelected(_currentPreference!);
+    }
+  }
+  void addListener(RidePreferencesListener listener) {
+    _listeners.add(listener);
+  }
+  void changePreference(RidePreference newPreference) {
+    _currentPreference = newPreference;
+    _notifyListeners();
   }
 }

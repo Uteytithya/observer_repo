@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/dummy_data/dummy_data.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/listener/observer/mobile_display.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/listener/observer/web_display.dart';
-import 'package:observer_repo/Exercise-1/WEEK-5/listener/subject/ride_preference_subject.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/service/rides_service.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/repository/mock/mock_locations_repository.dart';
 import 'package:observer_repo/Exercise-1/WEEK-5/repository/mock/mock_rides_repository.dart';
@@ -24,18 +23,16 @@ void main() {
   // 3. Initialize the rides service
   RidesService.initialize(MockRidesRepository());
 
-  RidePreferenceSubject subject = RidePreferenceSubject();
-
   MobileDisplay mobile = MobileDisplay();
   WebDisplay web = WebDisplay();
 
-  subject.addListener(mobile);
-  subject.addListener(web);
+  RidePrefService.instance.addListener(mobile);
+  RidePrefService.instance.addListener(web);
 
   print("\nNew Preferences Changed");
-  subject.changePreference(fakeRidePrefs[1]);
+  RidePrefService.instance.changePreference(fakeRidePrefs[1]);
   print("\nNew Preferences Changed");
-  subject.changePreference(fakeRidePrefs[2]);
+  RidePrefService.instance.changePreference(fakeRidePrefs[2]);
   
   runApp(const MyApp());
 }
